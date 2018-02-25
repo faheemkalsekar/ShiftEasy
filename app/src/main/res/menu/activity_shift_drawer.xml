@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="@string/shift">
+        <menu>
+            <item
+                android:id="@+id/start_shift"
+                android:icon="@drawable/ic_menu_start"
+                android:title="@string/start_shift" />
+            <item
+                android:id="@+id/end_shift"
+                android:icon="@drawable/ic_menu_end"
+                android:title="@string/end_shift" />
+        </menu>
+    </item>
+
+</menu>

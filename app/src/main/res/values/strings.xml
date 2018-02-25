@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ShiftEasy</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_shift">Shift Easy</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="shift">Shift</string>
+    <string name="end_shift">End Shift</string>
+    <string name="start_shift">Start Shift</string>
+    <string name="no_shift_all">No Shifts To Display</string>
+    <string name="no_tasks_add">Download Deputy App</string>
+    <string name="no_tasks_all">No Shifts To Display</string>
+</resources>

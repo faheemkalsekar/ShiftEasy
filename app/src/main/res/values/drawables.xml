@@ -1,0 +1,5 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_menu_start" type="drawable">@android:drawable/ic_menu_add</item>
+    <item name="ic_menu_end" type="drawable">@android:drawable/ic_menu_delete</item>
+    <drawable name="touchFeedback">#CFD8DC</drawable>
+</resources>
