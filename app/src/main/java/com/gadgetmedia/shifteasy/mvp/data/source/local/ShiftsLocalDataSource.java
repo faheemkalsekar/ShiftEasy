@@ -62,7 +62,25 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
 
     @Override
     public void getShifts(@NonNull final LoadShiftsCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Shift> shiftList = mShiftsDao.getShifts();
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (shiftList.isEmpty()) {
+                            // This will be called if the table is new or just empty.
+                            callback.onDataNotAvailable("Not in DB, load from server");
+                        } else {
+                            callback.onShiftsLoaded(shiftList);
+                        }
+                    }
+                });
+            }
+        };
 
+        mAppExecutors.diskIO().execute(runnable);
     }
 
     @Override

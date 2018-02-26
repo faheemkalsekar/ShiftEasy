@@ -158,6 +158,11 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
                 if (!mShiftsView.isActive()) {
                     return;
                 }
+
+                if (showLoadingUI) {
+                    mShiftsView.setLoadingIndicator(false);
+                }
+
                 mShiftsView.showLoadingShiftsError(errorMessage);
             }
         });

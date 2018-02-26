@@ -90,7 +90,7 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
 
             @Override
             public void onFailure(@NonNull Call<ShiftResponse[]> call, @NonNull Throwable t) {
-                Log.d("onResponse", "onResponse");
+                callback.onDataNotAvailable(t.getMessage());
             }
         });
     }
