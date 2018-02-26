@@ -1,5 +1,7 @@
 package com.gadgetmedia.shifteasy.mvp.ui.shifts;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +11,18 @@ import android.widget.TextView;
 
 import com.gadgetmedia.shifteasy.mvp.R;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
+import com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailActivity;
+import com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailFragment;
+import com.gadgetmedia.shifteasy.mvp.util.ActivityUtils;
+import com.gadgetmedia.shifteasy.mvp.util.ISO8601;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,29 +35,34 @@ public class ShiftRecyclerViewAdapter extends RecyclerView.Adapter<ShiftRecycler
     private final ShiftsListActivity mParentActivity;
     private final boolean mTwoPane;
     private final Picasso mPicasso;
-    /*
+    @Inject
+    Lazy<ShiftDetailFragment> shiftDetailFragmentLazy;
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+            final Shift shift = (Shift) view.getTag();
             if (mTwoPane) {
-                Bundle arguments = new Bundle();
-                arguments.putString(ShiftDetailFragment.ARG_ITEM_ID, item.id);
-                ShiftDetailFragment fragment = new ShiftDetailFragment();
-                fragment.setArguments(arguments);
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.item_detail_container, fragment)
-                        .commit();
+                ShiftDetailFragment fragment =
+                        (ShiftDetailFragment) mParentActivity.
+                                getSupportFragmentManager().
+                                findFragmentById(R.id.item_detail_container);
+
+                if (fragment == null) {
+                    // Get the fragment from dagger
+                    fragment = shiftDetailFragmentLazy.get();
+                    ActivityUtils.addFragmentToActivity(
+                            mParentActivity.getSupportFragmentManager(), fragment, R.id.contentFrame);
+                }
             } else {
                 Context context = view.getContext();
-                Intent intent = new Intent(context, ShiftDetailActivity.class);
-                intent.putExtra(ShiftDetailFragment.ARG_ITEM_ID, item.id);
+                final Intent intent = new Intent(context, ShiftDetailActivity.class);
+                intent.putExtra(ShiftDetailFragment.ARG_ITEM_ID, new Gson().toJson(shift));
 
                 context.startActivity(intent);
             }
         }
     };
-    */
+
     private List<Shift> mValues;
 
 
@@ -70,8 +86,20 @@ public class ShiftRecyclerViewAdapter extends RecyclerView.Adapter<ShiftRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mTitleView.setText(String.valueOf(holder.mItem.getId()));
-        holder.mDescView.setText(holder.mItem.getStartTime());
+        holder.mTitleView.setText(String.format("Shift %s", String.valueOf(holder.mItem.getId())));
+
+        final String startDate = ISO8601.convertISOToDate(holder.mItem.getStartTime());
+        final String endDate = ISO8601.convertISOToDate(holder.mItem.getStartTime());
+        String sb = "Shift Started at:" +
+                '\n' +
+                startDate +
+                '\n' +
+                '\n' +
+                "Shift Ended at:" +
+                '\n' +
+                endDate;
+
+        holder.mDescView.setText(sb);
 
         // Resize to the width specified maintaining aspect ratio
         mPicasso.load(holder.mItem.getImage())
@@ -79,7 +107,7 @@ public class ShiftRecyclerViewAdapter extends RecyclerView.Adapter<ShiftRecycler
                 into(holder.mImageView);
 
         holder.itemView.setTag(mValues.get(position));
-//        holder.itemView.setOnClickListener(mOnClickListener);
+        holder.itemView.setOnClickListener(mOnClickListener);
 
     }
 

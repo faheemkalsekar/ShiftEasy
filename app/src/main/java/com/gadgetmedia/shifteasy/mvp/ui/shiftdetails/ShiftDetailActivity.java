@@ -1,14 +1,11 @@
 package com.gadgetmedia.shifteasy.mvp.ui.shiftdetails;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.gadgetmedia.shifteasy.mvp.R;
-import com.gadgetmedia.shifteasy.mvp.ui.shifts.ShiftsListActivity;
 import com.gadgetmedia.shifteasy.mvp.util.ActivityUtils;
 
 import javax.inject.Inject;
@@ -45,9 +42,14 @@ public class ShiftDetailActivity extends DaggerAppCompatActivity {
 
         if (fragment == null) {
             // Get the fragment from dagger
+            Bundle arguments = new Bundle();
+            arguments.putString(ShiftDetailFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(ShiftDetailFragment.ARG_ITEM_ID));
+
             fragment = shiftDetailFragmentLazy.get();
+            fragment.setArguments(arguments);
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), fragment, R.id.contentFrame);
+                    getSupportFragmentManager(), fragment, R.id.item_detail_container);
         }
     }
 
@@ -62,7 +64,8 @@ public class ShiftDetailActivity extends DaggerAppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, ShiftsListActivity.class));
+//            NavUtils.navigateUpTo(this, new Intent(this, ShiftsListActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

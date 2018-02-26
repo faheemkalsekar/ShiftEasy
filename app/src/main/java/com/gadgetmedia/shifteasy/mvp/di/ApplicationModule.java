@@ -22,6 +22,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,7 +49,10 @@ public abstract class ApplicationModule {
     static OkHttpClient provideOkHttpClient(final Application application) {
         File cacheDir = new File(application.getCacheDir(), UUID.randomUUID().toString());
         // 10 MiB cache
-        Cache cache = new Cache(cacheDir, 100 * 1024 * 1024);
+        Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         return new OkHttpClient.Builder()
                 .cache(cache)
@@ -56,6 +60,7 @@ public abstract class ApplicationModule {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .addNetworkInterceptor(new AddHeaderInterceptor())
+                .addInterceptor(interceptor)
                 .build();
     }
 

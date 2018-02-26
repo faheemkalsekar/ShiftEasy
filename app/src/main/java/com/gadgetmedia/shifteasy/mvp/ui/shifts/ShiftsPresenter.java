@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 /**
- * Listens to user actions from the UI ({@link ShiftsFragment}), retrieves the data and updates the
+ * Listens to user actions from the UI ({@link ShiftsListActivity}), retrieves the data and updates the
  * UI as required.
  * <p/>
  * By marking the constructor with {@code @Inject}, Dagger injects the dependencies required to
@@ -106,7 +106,6 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
         });
     }
 
-
     /**
      * @param forceUpdate   Pass in true to refresh the data in the {@link ShiftsDataSource}
      * @param showLoadingUI Pass in true to display a loading icon in the UI
@@ -167,39 +166,6 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
             }
         });
 
-        mShiftsRepository.getBusinessInfo(new ShiftsDataSource.LoadBusinessInfoCallback() {
-            @Override
-            public void onBusinessInfoLoaded(final List<Business> businessInfo) {
-                final List<Business> businessToShow = new ArrayList<>();
-
-                // This callback may be called twice, once for the cache and once for loading
-                // the data from the server API, so we check before decrementing, otherwise
-                // it throws "Counter has been corrupted!" exception.
-                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                    EspressoIdlingResource.decrement(); // Set app as idle.
-                }
-
-                if (mShiftsView == null || !mShiftsView.isActive()) {
-                    return;
-                }
-
-                if (showLoadingUI) {
-                    mShiftsView.setLoadingIndicator(false);
-                }
-
-                businessToShow.addAll(businessInfo);
-                processBusinessInfo(businessToShow);
-            }
-
-            @Override
-            public void onDataNotAvailable(final String message) {
-                // The view may not be able to handle UI updates anymore
-                if (!mShiftsView.isActive()) {
-                    return;
-                }
-                mShiftsView.showNoBusinessInfo();
-            }
-        });
 
 
     }

@@ -101,7 +101,7 @@ public class ShiftsRepository implements ShiftsDataSource {
 
             @Override
             public void onDataNotAvailable(String message) {
-                getBizInfoFromRemoteDataSource(callback);
+//                getBizInfoFromRemoteDataSource(callback);
             }
         });
 
