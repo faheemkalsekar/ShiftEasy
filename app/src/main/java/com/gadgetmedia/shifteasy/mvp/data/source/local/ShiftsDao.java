@@ -39,7 +39,7 @@ public interface ShiftsDao {
      * @param shift the shift to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertShift(final Shift shift);
+    void insertShift(final List<Shift> shift);
 
     /**
      * Update a shift.

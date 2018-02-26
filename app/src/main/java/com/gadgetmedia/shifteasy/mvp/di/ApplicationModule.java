@@ -9,6 +9,8 @@ import com.gadgetmedia.shifteasy.mvp.api.ShiftsService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.UUID;
@@ -67,6 +69,15 @@ public abstract class ApplicationModule {
                 .client(okHttpClient)
                 .build()
                 .create(ShiftsService.class);
+    }
+
+    @Provides
+    @Singleton
+    static Picasso providePicasso(final Application application) {
+        Picasso.Builder builder = new Picasso.Builder(application);
+        Picasso built = builder.build();
+        Picasso.setSingletonInstance(built);
+        return builder.build();
     }
 
     //expose Application as an injectable context

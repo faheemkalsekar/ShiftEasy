@@ -15,6 +15,6 @@
     <string name="end_shift">End Shift</string>
     <string name="start_shift">Start Shift</string>
     <string name="no_shift_all">No Shifts To Display</string>
-    <string name="no_tasks_add">Download Deputy App</string>
+    <string name="no_tasks_add">Looking for a Shift. Deputy has an opening</string>
     <string name="no_tasks_all">No Shifts To Display</string>
 </resources>

@@ -30,7 +30,7 @@ public interface BusinessDao {
      * @param business the shift to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertBusiness(final Business business);
+    void insertBusiness(final List<Business> business);
 
     /**
      * Delete all business.

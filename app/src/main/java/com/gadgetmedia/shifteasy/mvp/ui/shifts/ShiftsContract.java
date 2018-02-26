@@ -23,6 +23,10 @@ public interface ShiftsContract {
         void showBusinessInfo(final List<Business> businessInfo);
 
         void showNoBusinessInfo();
+
+        void showLoadingShiftsError(String message);
+
+        void showNoShift();
     }
 
     interface Presenter extends BasePresenter<View> {

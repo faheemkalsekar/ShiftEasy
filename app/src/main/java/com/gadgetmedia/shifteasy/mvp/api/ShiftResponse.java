@@ -1,11 +1,15 @@
 package com.gadgetmedia.shifteasy.mvp.api;
 
+import com.gadgetmedia.shifteasy.mvp.data.Shift;
+
+import java.util.List;
+
 /**
  * POJO to hold News responses.
  */
-public class ShiftsListResponse {
+public class ShiftResponse {
 
-    private String id;
+    private int id;
     private String endLatitude;
     private String startLongitude;
     private String startLatitude;
@@ -14,11 +18,11 @@ public class ShiftsListResponse {
     private String endLongitude;
     private String end;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(final String id) {
+    public void setId(final int id) {
         this.id = id;
     }
 

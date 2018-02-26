@@ -1,9 +1,11 @@
 package com.gadgetmedia.shifteasy.mvp.data.source.remote;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.gadgetmedia.shifteasy.mvp.api.BusinessResponse;
 import com.gadgetmedia.shifteasy.mvp.api.ShiftRequestData;
+import com.gadgetmedia.shifteasy.mvp.api.ShiftResponse;
 import com.gadgetmedia.shifteasy.mvp.api.ShiftsService;
 import com.gadgetmedia.shifteasy.mvp.data.Business;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
@@ -38,16 +40,18 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
 
     @Override
     public void getBusinessInfo(@NonNull final LoadBusinessInfoCallback callback) {
+
         mShiftsService.getBusiness().enqueue(new Callback<BusinessResponse>() {
             @Override
             public void onResponse(@NonNull final Call<BusinessResponse> call,
                                    @NonNull final Response<BusinessResponse> response) {
+
                 final BusinessResponse body = response.body();
 
-                if (body!=null) {
+                if (body != null) {
                     final List<Business> businessList = new ArrayList<>();
 
-                    final Business business = new Business(body.getLogo(),body.getName());
+                    final Business business = new Business(body.getLogo(), body.getName());
                     businessList.add(business);
                     callback.onBusinessInfoLoaded(businessList);
                 }
@@ -65,6 +69,30 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
     @Override
     public void getShifts(@NonNull final LoadShiftsCallback callback) {
 
+        mShiftsService.getShiftsList().enqueue(new Callback<ShiftResponse[]>() {
+            @Override
+            public void onResponse(@NonNull Call<ShiftResponse[]> call, @NonNull Response<ShiftResponse[]> response) {
+                Log.d("onResponse", "onResponse");
+                final ShiftResponse[] shiftResponse = response.body();
+
+                if (shiftResponse != null) {
+                    final List<Shift> shiftList = new ArrayList<>();
+                    for (ShiftResponse shiftRes : shiftResponse) {
+                        final Shift shift = new Shift(shiftRes.getId(), shiftRes.getStart(), shiftRes.getEnd(),
+                                shiftRes.getStartLatitude(), shiftRes.getStartLongitude(), shiftRes.getEndLatitude(),
+                                shiftRes.getEndLongitude(), shiftRes.getImage());
+                        shiftList.add(shift);
+                    }
+
+                    callback.onShiftsLoaded(shiftList);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ShiftResponse[]> call, @NonNull Throwable t) {
+                Log.d("onResponse", "onResponse");
+            }
+        });
     }
 
     @Override
@@ -87,23 +115,11 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
 
     }
 
-    @Override
-    public void deleteAllShifts() {
-
-    }
 
     @Override
     public void refreshBusinessInfo() {
 
     }
 
-    @Override
-    public void deleteAllBiz() {
 
-    }
-
-    @Override
-    public void saveBusinessList(List<Business> businessInfo) {
-
-    }
 }

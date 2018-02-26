@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.gadgetmedia.shifteasy.mvp.api.ShiftRequestData;
 import com.gadgetmedia.shifteasy.mvp.data.Business;
+import com.gadgetmedia.shifteasy.mvp.data.Shift;
+import com.gadgetmedia.shifteasy.mvp.data.source.local.ShiftsLocalDataSource;
 import com.gadgetmedia.shifteasy.mvp.di.AppComponent;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class ShiftsRepository implements ShiftsDataSource {
      * This variable has package local visibility so it can be accessed from tests.
      */
     Map<Integer, Business> mCachedBusiness;
+    Map<Integer, Shift> mCachedShift;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -108,6 +111,70 @@ public class ShiftsRepository implements ShiftsDataSource {
         }
     }
 
+    @Override
+    public void getShifts(@NonNull final LoadShiftsCallback callback) {
+        checkNotNull(callback);
+
+        // Respond immediately with cache if available and not dirty
+        if (mCachedShift != null && !mShiftsCacheIsDirty) {
+            callback.onShiftsLoaded(new ArrayList<>(mCachedShift.values()));
+        }
+
+        if (mShiftsCacheIsDirty) {
+            // If the cache is dirty we need to fetch new data from the network.
+            getShiftFromServer(callback);
+        } else {
+            // Query the local storage if available. If not, query the network.
+            mLocalShiftsDataSource.getShifts(new LoadShiftsCallback() {
+                @Override
+                public void onShiftsLoaded(final List<Shift> shifts) {
+                    refreshShiftCache(shifts);
+                    callback.onShiftsLoaded(shifts);
+                }
+
+                @Override
+                public void onDataNotAvailable(final String errorMessage) {
+                    getShiftFromServer(callback);
+                }
+            });
+        }
+    }
+
+
+    private void getShiftFromServer(final LoadShiftsCallback callback) {
+
+        mRemoteShiftsDataSource.getShifts(new LoadShiftsCallback() {
+            @Override
+            public void onShiftsLoaded(final List<Shift> shifts) {
+                refreshShiftCache(shifts);
+                refreshLocalShift(shifts);
+                callback.onShiftsLoaded(shifts);
+            }
+
+            @Override
+            public void onDataNotAvailable(final String errorMessage) {
+                callback.onDataNotAvailable(errorMessage);
+            }
+        });
+    }
+
+    private void refreshShiftCache(final List<Shift> shiftList) {
+        if (mCachedShift == null) {
+            mCachedShift = new LinkedHashMap<>();
+        }
+        mCachedShift.clear();
+        for (final Shift shift : shiftList) {
+            mCachedShift.put(shift.getId(), shift);
+        }
+        mShiftsCacheIsDirty = false;
+    }
+
+    private void refreshLocalShift(final List<Shift> shiftList) {
+        ShiftsLocalDataSource localDataSource = (ShiftsLocalDataSource) mLocalShiftsDataSource;
+        localDataSource.deleteAllShifts();
+        localDataSource.saveShiftsList(shiftList);
+    }
+
     private void refreshBizCache(final List<Business> businesses) {
         if (mCachedBusiness == null) {
             mCachedBusiness = new LinkedHashMap<>();
@@ -119,7 +186,15 @@ public class ShiftsRepository implements ShiftsDataSource {
         mBusinessCacheIsDirty = false;
     }
 
+    private void refreshLocalBizDataSource(final List<Business> businessInfo) {
+        ShiftsLocalDataSource localDataSource = (ShiftsLocalDataSource) mLocalShiftsDataSource;
+        localDataSource.deleteAllBiz();
+        localDataSource.saveBusinessList(businessInfo);
+    }
+
+
     private void getBizInfoFromRemoteDataSource(final LoadBusinessInfoCallback callback) {
+
         mRemoteShiftsDataSource.getBusinessInfo(new LoadBusinessInfoCallback() {
             @Override
             public void onBusinessInfoLoaded(final List<Business> businessInfo) {
@@ -135,15 +210,8 @@ public class ShiftsRepository implements ShiftsDataSource {
         });
     }
 
-    private void refreshLocalBizDataSource(final List<Business> businessInfo) {
-        mLocalShiftsDataSource.deleteAllBiz();
-        mLocalShiftsDataSource.saveBusinessList(businessInfo);
-    }
 
-    @Override
-    public void getShifts(@NonNull final LoadShiftsCallback callback) {
 
-    }
 
     @Override
     public void getShift(@NonNull final String shiftId, @NonNull final GetShiftCallback callback) {
@@ -165,24 +233,11 @@ public class ShiftsRepository implements ShiftsDataSource {
         mShiftsCacheIsDirty = true;
     }
 
-    @Override
-    public void deleteAllShifts() {
-
-    }
 
     @Override
     public void refreshBusinessInfo() {
         mBusinessCacheIsDirty = true;
     }
 
-    @Override
-    public void deleteAllBiz() {
-
-    }
-
-    @Override
-    public void saveBusinessList(final List<Business> businessInfo) {
-        // Empty for now
-    }
 
 }

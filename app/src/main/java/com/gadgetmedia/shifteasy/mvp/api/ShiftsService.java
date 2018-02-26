@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 public interface ShiftsService {
 
     @GET("shifts")
-    Call<ShiftsListResponse> getShiftsList();
+    Call<ShiftResponse[]> getShiftsList();
 
     @GET("business")
     Call<BusinessResponse> getBusiness();

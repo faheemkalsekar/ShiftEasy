@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.gadgetmedia.shifteasy.mvp.api.ShiftRequestData;
 import com.gadgetmedia.shifteasy.mvp.data.Business;
+import com.gadgetmedia.shifteasy.mvp.data.Shift;
 import com.gadgetmedia.shifteasy.mvp.data.source.ShiftsDataSource;
 import com.gadgetmedia.shifteasy.mvp.util.AppExecutors;
 
@@ -11,6 +12,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Concrete implementation of a Shifts Data source as a db.
@@ -83,22 +86,52 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
     }
 
     @Override
-    public void deleteAllShifts() {
-
-    }
-
-    @Override
     public void refreshBusinessInfo() {
 
     }
 
-    @Override
+    public void deleteAllShifts() {
+
+        Runnable saveRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mShiftsDao.deleteShifts();
+            }
+        };
+        mAppExecutors.diskIO().execute(saveRunnable);
+    }
+
     public void deleteAllBiz() {
+
+        Runnable saveRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBizDao.deleteBusiness();
+            }
+        };
+        mAppExecutors.diskIO().execute(saveRunnable);
 
     }
 
-    @Override
-    public void saveBusinessList(List<Business> businessInfo) {
+    public void saveShiftsList(final List<Shift> shiftList) {
+        checkNotNull(shiftList);
+        Runnable saveRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mShiftsDao.insertShift(shiftList);
+            }
+        };
+        mAppExecutors.diskIO().execute(saveRunnable);
+    }
 
+    public void saveBusinessList(final List<Business> businessList) {
+        checkNotNull(businessList);
+        Runnable saveRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mBizDao.insertBusiness(businessList);
+            }
+        };
+        mAppExecutors.diskIO().execute(saveRunnable);
     }
 }

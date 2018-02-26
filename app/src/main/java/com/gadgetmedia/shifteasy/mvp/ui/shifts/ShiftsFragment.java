@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.gadgetmedia.shifteasy.mvp.util.EmptyStateRecyclerView;
 import com.gadgetmedia.shifteasy.mvp.util.ScrollChildSwipeRefreshLayout;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,6 +40,7 @@ public class ShiftsFragment extends DaggerFragment implements ShiftsContract.Vie
 
     private OnBusinessChangedListener mCallback;
     private OnListFragmentInteractionListener mListener;
+    private ShiftRecyclerViewAdapter mAdapter;
 
     @Inject
     public ShiftsFragment() {
@@ -61,10 +64,11 @@ public class ShiftsFragment extends DaggerFragment implements ShiftsContract.Vie
         Context context = view.getContext();
         final EmptyStateRecyclerView recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
+        recyclerView.setEmptyView(view.findViewById(R.id.noShifts));
         recyclerView.setHasFixedSize(true);
-//        mAdapter = new NewsItemRecyclerViewAdapter(Picasso.with(context),new ArrayList<News>(), mListener);
-//        recyclerView.setAdapter(mAdapter);
+        mAdapter = new ShiftRecyclerViewAdapter(Picasso.with(context),
+                new ArrayList<Shift>(), mListener);
+        recyclerView.setAdapter(mAdapter);
 
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
@@ -125,13 +129,24 @@ public class ShiftsFragment extends DaggerFragment implements ShiftsContract.Vie
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
+    public void setLoadingIndicator(final boolean active) {
+        if (getView() == null) {
+            return;
+        }
+        final SwipeRefreshLayout srl = getView().findViewById(R.id.refresh_layout);
 
+        // Make sure setRefreshing() is called after the layout is done with everything else.
+        srl.post(new Runnable() {
+            @Override
+            public void run() {
+                srl.setRefreshing(active);
+            }
+        });
     }
 
     @Override
-    public void showShifts(final List<Shift> tasks) {
-
+    public void showShifts(final List<Shift> shifts) {
+        mAdapter.replaceData(shifts);
     }
 
     @Override
@@ -141,13 +156,23 @@ public class ShiftsFragment extends DaggerFragment implements ShiftsContract.Vie
 
     @Override
     public void showBusinessInfo(List<Business> businessInfo) {
-        Log.d("showBusinessInfo","showBusinessInfo");
+        Log.d("showBusinessInfo", "showBusinessInfo");
         mCallback.onShowBusinessInfo(businessInfo.get(0));
     }
 
     @Override
     public void showNoBusinessInfo() {
+        // Show default business info.
+    }
 
+    @Override
+    public void showLoadingShiftsError(final String message) {
+        showMessage(message);
+    }
+
+    @Override
+    public void showNoShift() {
+        // Handled by Empty Recycler View
     }
 
     @Override
@@ -155,6 +180,13 @@ public class ShiftsFragment extends DaggerFragment implements ShiftsContract.Vie
         super.onDetach();
         mCallback = null;
         mListener = null;
+    }
+
+    private void showMessage(final String message) {
+        if (getView() == null) {
+            return;
+        }
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
     }
 
     // Shifts Activity must implement this interface

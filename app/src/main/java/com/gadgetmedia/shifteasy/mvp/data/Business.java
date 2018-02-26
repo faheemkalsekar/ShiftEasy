@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Immutable model class for a Shift.
@@ -20,18 +21,19 @@ public class Business {
     */
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     @ColumnInfo(name = "id")
     private int mId;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "name")
     private String mName;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "logo")
     private String mLogo;
 
-    public Business(final int mId, @NonNull final String mName, @NonNull final String mLogo) {
+    public Business(@NonNull final int mId, @Nullable final String mName, @Nullable final String mLogo) {
         this.mId = mId;
         this.mName = mName;
         this.mLogo = mLogo;

@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Immutable model class for a Shift.
@@ -26,31 +27,31 @@ public class Shift {
     @ColumnInfo(name = "id")
     private final int mId;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "start")
     private final String mStartTime;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "end")
     private final String mEndTime;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "startLatitude")
     private final String mStartLatitude;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "startLongitude")
     private final String mStartLongitude;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "endLatitude")
     private final String mEndLatitude;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "endLongitude")
     private final String mEndLongitude;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "image")
     private final String mImage;
 

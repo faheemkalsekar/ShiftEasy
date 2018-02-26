@@ -31,7 +31,6 @@ public class ShiftsActivity extends DaggerAppCompatActivity
 
     @Inject
     Lazy<ShiftsFragment> shiftsFragmentProvider;
-    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +88,15 @@ public class ShiftsActivity extends DaggerAppCompatActivity
     @Override
     public void onShowBusinessInfo(final Business business) {
         final NavigationView navigationView = findViewById(R.id.nav_view);
-        View header = navigationView.getHeaderView(0);
-        TextView txtView = header.findViewById(R.id.business_name);
-        ImageView imageView = header.findViewById(R.id.business_logo);
+        final View header = navigationView.getHeaderView(0);
+        final TextView txtView = header.findViewById(R.id.business_name);
+        final ImageView imageView = header.findViewById(R.id.business_logo);
         txtView.setText(business.getName());
-        Picasso.with(this).load(business.getLogo()).resize(160,0).into(imageView);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.openDrawer(GravityCompat.START);
+        Picasso.with(getApplication()).
+                load(business.getLogo()).
+                resize(160,0).
+                into(imageView);
     }
 
     @Override

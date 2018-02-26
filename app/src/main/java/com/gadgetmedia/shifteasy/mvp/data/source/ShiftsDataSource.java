@@ -28,13 +28,7 @@ public interface ShiftsDataSource {
 
     void refreshShifts();
 
-    void deleteAllShifts();
-
     void refreshBusinessInfo();
-
-    void deleteAllBiz();
-
-    void saveBusinessList(final List<Business> businessInfo);
 
 
     interface LoadBusinessInfoCallback {
@@ -47,7 +41,7 @@ public interface ShiftsDataSource {
 
         void onShiftsLoaded(final List<Shift> shifts);
 
-        void onDataNotAvailable();
+        void onDataNotAvailable(String errorMessage);
     }
 
     interface GetShiftCallback {
