@@ -17,4 +17,6 @@
     <string name="no_shift_all">No Shifts To Display</string>
     <string name="no_tasks_add">Looking for a Shift. Deputy has an opening</string>
     <string name="no_tasks_all">No Shifts To Display</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Shift Details</string>
 </resources>

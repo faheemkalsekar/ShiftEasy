@@ -1,11 +1,9 @@
 package com.gadgetmedia.shifteasy.mvp.ui.shifts;
 
 import com.gadgetmedia.shifteasy.mvp.di.ActivityScoped;
-import com.gadgetmedia.shifteasy.mvp.di.FragmentScoped;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.android.ContributesAndroidInjector;
 
 /**
  * This is a Dagger module. We use this to pass in the View dependency to the
@@ -17,13 +15,7 @@ public abstract class ShiftsPresenterModule {
     //@provides or @Binds method as @FragmentScoped.  Use case is when there are multiple fragments
     //in an activity but you do not want them to share all the same objects.
 
-    @FragmentScoped
-    @ContributesAndroidInjector
-    abstract ShiftsFragment shiftsFragmentFragment();
-
     @ActivityScoped
     @Binds
     abstract ShiftsContract.Presenter shiftsPresenter(final ShiftsPresenter presenter);
-
-
 }

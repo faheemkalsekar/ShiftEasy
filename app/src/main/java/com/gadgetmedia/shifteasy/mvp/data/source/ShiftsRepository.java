@@ -130,7 +130,7 @@ public class ShiftsRepository implements ShiftsDataSource {
 
             @Override
             public void onDataNotAvailable(final String errorMessage) {
-                getShiftFromServer(callback);
+//                getShiftFromServer(callback);
             }
         });
 

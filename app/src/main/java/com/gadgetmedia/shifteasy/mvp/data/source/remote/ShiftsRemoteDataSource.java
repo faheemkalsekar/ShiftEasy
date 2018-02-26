@@ -61,7 +61,7 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
             public void onFailure(@NonNull Call<BusinessResponse> call,
                                   @NonNull Throwable t) {
 
-                callback.onDataNotAvailable(t.getMessage());
+                callback.onDataNotAvailable("Error while fetching from server");
             }
         });
     }
@@ -90,7 +90,7 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
 
             @Override
             public void onFailure(@NonNull Call<ShiftResponse[]> call, @NonNull Throwable t) {
-                callback.onDataNotAvailable(t.getMessage());
+                callback.onDataNotAvailable("Error while fetching from server");
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.gadgetmedia.shifteasy.mvp.di;
 
-import com.gadgetmedia.shifteasy.mvp.ui.shifts.ShiftsActivity;
+import com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailActivity;
+import com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailPresenterModule;
+import com.gadgetmedia.shifteasy.mvp.ui.shifts.ShiftsListActivity;
 import com.gadgetmedia.shifteasy.mvp.ui.shifts.ShiftsPresenterModule;
 
 import dagger.Module;
@@ -15,7 +17,16 @@ import dagger.android.ContributesAndroidInjector;
  */
 @Module
 public abstract class ActivityBindingModule {
+    //The general flow:
+    // Activity creates a fragment,
+    // fragment registers with dagger,
+    // dagger injects the presenter directly into the fragment.
+
     @ActivityScoped
     @ContributesAndroidInjector(modules = ShiftsPresenterModule.class)
-    abstract ShiftsActivity shiftsActivity();
+    abstract ShiftsListActivity shiftsActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = ShiftDetailPresenterModule.class)
+    abstract ShiftDetailActivity shiftDetailActivity();
 }

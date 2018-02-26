@@ -9,7 +9,6 @@ import com.gadgetmedia.shifteasy.mvp.api.ShiftsService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -45,11 +44,11 @@ public abstract class ApplicationModule {
     }
 
     @Provides
-    @Singleton
+//    @Singleton
     static OkHttpClient provideOkHttpClient(final Application application) {
         File cacheDir = new File(application.getCacheDir(), UUID.randomUUID().toString());
         // 10 MiB cache
-        Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
+        Cache cache = new Cache(cacheDir, 100 * 1024 * 1024);
 
         return new OkHttpClient.Builder()
                 .cache(cache)
@@ -61,7 +60,7 @@ public abstract class ApplicationModule {
     }
 
     @Provides
-    @Singleton
+//    @Singleton
     static ShiftsService provideShiftsService(final Gson gson, final OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
@@ -72,11 +71,13 @@ public abstract class ApplicationModule {
     }
 
     @Provides
-    @Singleton
+//    @Singleton
     static Picasso providePicasso(final Application application) {
         Picasso.Builder builder = new Picasso.Builder(application);
         Picasso built = builder.build();
         Picasso.setSingletonInstance(built);
+//        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
         return builder.build();
     }
 

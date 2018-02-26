@@ -13,27 +13,52 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.gadgetmedia.shifteasy.mvp.ui.shifts.ShiftsFragment.OnListFragmentInteractionListener;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Shift} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link View.OnClickListener}.
  */
 public class ShiftRecyclerViewAdapter extends RecyclerView.Adapter<ShiftRecyclerViewAdapter.ViewHolder> {
 
-    private final OnListFragmentInteractionListener mListener;
+    private final ShiftsListActivity mParentActivity;
+    private final boolean mTwoPane;
     private final Picasso mPicasso;
+    /*
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+            if (mTwoPane) {
+                Bundle arguments = new Bundle();
+                arguments.putString(ShiftDetailFragment.ARG_ITEM_ID, item.id);
+                ShiftDetailFragment fragment = new ShiftDetailFragment();
+                fragment.setArguments(arguments);
+                mParentActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.item_detail_container, fragment)
+                        .commit();
+            } else {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ShiftDetailActivity.class);
+                intent.putExtra(ShiftDetailFragment.ARG_ITEM_ID, item.id);
+
+                context.startActivity(intent);
+            }
+        }
+    };
+    */
     private List<Shift> mValues;
 
-    public ShiftRecyclerViewAdapter(final Picasso picasso,
-                                    final List<Shift> items,
-                                    final OnListFragmentInteractionListener listener) {
-        mValues = items;
-        mListener = listener;
-        mPicasso = picasso;
-    }
 
+    ShiftRecyclerViewAdapter(ShiftsListActivity parent,
+                             final Picasso picasso,
+                             final List<Shift> items,
+                             boolean twoPane) {
+        mValues = items;
+        mPicasso = picasso;
+        mTwoPane = twoPane;
+        mParentActivity = parent;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,6 +78,8 @@ public class ShiftRecyclerViewAdapter extends RecyclerView.Adapter<ShiftRecycler
                 .resize(240, 0).
                 into(holder.mImageView);
 
+        holder.itemView.setTag(mValues.get(position));
+//        holder.itemView.setOnClickListener(mOnClickListener);
 
     }
 
