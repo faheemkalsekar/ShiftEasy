@@ -33,6 +33,7 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
         mShiftsDao = shiftsDao;
         mBizDao = businessDao;
     }
+
     /**
      * Note: {@link LoadBusinessInfoCallback#onDataNotAvailable(String)} is fired if the database doesn't exist
      * or the table is empty.
@@ -84,32 +85,18 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
     }
 
     @Override
-    public void getShift(@NonNull final String shiftId, @NonNull final GetShiftCallback callback) {
-
+    public void startShift(@NonNull final ShiftRequestData shift, @NonNull final ShiftStartStopCallback callback) {
+        //Unused cause we are fecthing from server
     }
 
     @Override
-    public void startShift(@NonNull ShiftRequestData shift) {
+    public void endShift(@NonNull final ShiftRequestData shift, @NonNull final ShiftStartStopCallback callback) {
 
-    }
-
-    @Override
-    public void endShift(@NonNull ShiftRequestData shift) {
-
+        //Unused cause we after fecthing from server
     }
 
     @Override
     public void refreshShifts() {
-
-    }
-
-    @Override
-    public void refreshBusinessInfo() {
-
-    }
-
-    public void deleteAllShifts() {
-
         Runnable saveRunnable = new Runnable() {
             @Override
             public void run() {
@@ -119,8 +106,8 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
         mAppExecutors.diskIO().execute(saveRunnable);
     }
 
-    public void deleteAllBiz() {
-
+    @Override
+    public void refreshBusinessInfo() {
         Runnable saveRunnable = new Runnable() {
             @Override
             public void run() {
@@ -128,7 +115,6 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
             }
         };
         mAppExecutors.diskIO().execute(saveRunnable);
-
     }
 
     public void saveShiftsList(final List<Shift> shiftList) {

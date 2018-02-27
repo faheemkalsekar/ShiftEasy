@@ -2,6 +2,7 @@ package com.gadgetmedia.shifteasy.mvp.ui.shifts;
 
 import com.gadgetmedia.shifteasy.mvp.BasePresenter;
 import com.gadgetmedia.shifteasy.mvp.BaseView;
+import com.gadgetmedia.shifteasy.mvp.api.ShiftRequestData;
 import com.gadgetmedia.shifteasy.mvp.data.Business;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
 
@@ -24,9 +25,11 @@ public interface ShiftsContract {
 
         void showNoBusinessInfo();
 
-        void showLoadingShiftsError(String message);
+        void showServerMessage(String message);
 
         void showNoShift();
+
+        void reloadShifts();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -35,7 +38,11 @@ public interface ShiftsContract {
 
         void loadShifts(final boolean forceUpdate);
 
-        void takeView(ShiftsContract.View view);
+        void startShift(final ShiftRequestData shiftRequestData, final boolean showLoadingUI);
+
+        void endShift(final ShiftRequestData shiftRequestData, final boolean showLoadingUI);
+
+        void takeView(final ShiftsContract.View view);
 
         void dropView();
     }

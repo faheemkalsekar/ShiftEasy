@@ -20,11 +20,9 @@ public interface ShiftsDataSource {
 
     void getShifts(@NonNull final LoadShiftsCallback callback);
 
-    void getShift(@NonNull final String shiftId, @NonNull final GetShiftCallback callback);
+    void startShift(@NonNull final ShiftRequestData shift, @NonNull final ShiftStartStopCallback callback);
 
-    void startShift(@NonNull final ShiftRequestData shift);
-
-    void endShift(@NonNull final ShiftRequestData shift);
+    void endShift(@NonNull final ShiftRequestData shift, @NonNull final ShiftStartStopCallback callback);
 
     void refreshShifts();
 
@@ -34,14 +32,14 @@ public interface ShiftsDataSource {
     interface LoadBusinessInfoCallback {
         void onBusinessInfoLoaded(final List<Business> businessInfo);
 
-        void onDataNotAvailable(String message);
+        void onDataNotAvailable(final String message);
     }
 
     interface LoadShiftsCallback {
 
         void onShiftsLoaded(final List<Shift> shifts);
 
-        void onDataNotAvailable(String errorMessage);
+        void onDataNotAvailable(final String errorMessage);
     }
 
     interface GetShiftCallback {
@@ -49,5 +47,11 @@ public interface ShiftsDataSource {
         void onShiftLoaded(final Shift shift);
 
         void onDataNotAvailable();
+    }
+
+    interface ShiftStartStopCallback {
+        void onSuccess(final String message);
+
+        void onFailure(final String errorMessage);
     }
 }

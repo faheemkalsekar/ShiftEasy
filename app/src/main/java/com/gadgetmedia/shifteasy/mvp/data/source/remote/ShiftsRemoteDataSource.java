@@ -95,26 +95,44 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
         });
     }
 
+
     @Override
-    public void getShift(@NonNull final String shiftId, @NonNull final GetShiftCallback callback) {
+    public void startShift(@NonNull final ShiftRequestData shiftData, @NonNull final ShiftStartStopCallback callback) {
+        mShiftsService.startAShift(shiftData).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                final String message = response.body();
+                callback.onSuccess(message);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                callback.onFailure("Error starting shift");
+            }
+        });
 
     }
 
     @Override
-    public void startShift(@NonNull final ShiftRequestData shift) {
+    public void endShift(@NonNull ShiftRequestData shiftData, @NonNull final ShiftStartStopCallback callback) {
+        mShiftsService.endAShift(shiftData).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                final String message = response.body();
+                callback.onSuccess(message);
+            }
 
-    }
-
-    @Override
-    public void endShift(@NonNull final ShiftRequestData shift) {
-
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                callback.onFailure("Error ending shift");
+            }
+        });
     }
 
     @Override
     public void refreshShifts() {
 
     }
-
 
     @Override
     public void refreshBusinessInfo() {

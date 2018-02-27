@@ -3,8 +3,14 @@ package com.gadgetmedia.shifteasy.mvp.api;
 public class ShiftRequestData {
 
     private String time;
-    private String longitude;
     private String latitude;
+    private String longitude;
+
+    public ShiftRequestData(final String time, final String latitude, final String longitude) {
+        this.time = time;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     public String getTime() {
         return time;

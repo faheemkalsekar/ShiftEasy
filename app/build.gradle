@@ -17,7 +17,7 @@ android {
         debug {
             minifyEnabled true
             // Uses new built-in shrinker http://tools.android.com/tech-docs/new-build-system/built-in-shrinker
-            useProguard false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
             buildConfigField "String", "BASE_URL", '\"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/dmc/\"'
@@ -124,5 +124,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'pub.devrel:easypermissions:1.1.3'
+    implementation "com.google.android.gms:play-services-location:11.8.0"
 
 }

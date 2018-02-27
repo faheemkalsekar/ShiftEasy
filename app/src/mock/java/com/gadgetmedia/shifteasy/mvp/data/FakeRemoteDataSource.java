@@ -17,7 +17,7 @@ public class FakeRemoteDataSource implements ShiftsDataSource {
     }
 
     @Override
-    public void getBusinessInfo() {
+    public void getBusinessInfo(@NonNull LoadBusinessInfoCallback businessInfoCallback) {
 
     }
 
@@ -48,7 +48,8 @@ public class FakeRemoteDataSource implements ShiftsDataSource {
     }
 
     @Override
-    public void deleteAllShifts() {
+    public void refreshBusinessInfo() {
 
     }
+
 }

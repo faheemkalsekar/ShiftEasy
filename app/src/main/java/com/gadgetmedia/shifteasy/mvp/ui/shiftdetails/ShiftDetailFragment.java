@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.gadgetmedia.shifteasy.mvp.R;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
-import com.gadgetmedia.shifteasy.mvp.util.ISO8601;
+import com.gadgetmedia.shifteasy.mvp.util.DateTimeUtil;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
@@ -70,19 +70,16 @@ public class ShiftDetailFragment extends DaggerFragment {
         if (mShift != null) {
             try {
 
-                final String startDate = ISO8601.convertISOToDate(mShift.getStartTime());
-                final String endDate = ISO8601.convertISOToDate(mShift.getStartTime());
-                final StringBuilder sb = new StringBuilder();
-                sb.append("Shift Started at:")
-                        .append('\n')
-                        .append(startDate)
-                        .append('\n')
-                        .append('\n')
-                        .append("Shift Ended at:")
-                        .append('\n')
-                        .append(endDate);
+                String sb = "Shift Started at:" +
+                        '\n' +
+                        DateTimeUtil.parseDate(mShift.getStartTime()) +
+                        '\n' +
+                        '\n' +
+                        "Shift Ended at:" +
+                        '\n' +
+                        DateTimeUtil.parseDate(mShift.getEndTime());
 
-                ((TextView) rootView.findViewById(R.id.item_detail)).setText(sb.toString());
+                ((TextView) rootView.findViewById(R.id.item_detail)).setText(sb);
             } catch (Exception e) {
                 e.printStackTrace();
             }

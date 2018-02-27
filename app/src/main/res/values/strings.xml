@@ -19,4 +19,17 @@
     <string name="no_tasks_all">No Shifts To Display</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Shift Details</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="rationale_location">This app needs access to your location to know where and who you are.</string>
+
+    <string name="returned_from_app_settings_to_activity">
+        Returned from app settings to MainActivity with the following permissions:
+        \nLocation : %s
+    </string>
+    <string name="camera">Camera</string>
+    <string name="location_and_contacts">Location and Contacts</string>
+    <string name="sms">SMS</string>
 </resources>

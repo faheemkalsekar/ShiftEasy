@@ -1,5 +1,6 @@
 package com.gadgetmedia.shifteasy.mvp.ui.shifts;
 
+import com.gadgetmedia.shifteasy.mvp.api.ShiftRequestData;
 import com.gadgetmedia.shifteasy.mvp.data.Business;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
 import com.gadgetmedia.shifteasy.mvp.data.source.ShiftsDataSource;
@@ -55,16 +56,121 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
         loadShifts(forceUpdate || mFirstLoad, true);
     }
 
+    @Override
+    public void startShift(final ShiftRequestData shiftRequestData, final boolean showLoadingUI) {
+        showLoadingUI(showLoadingUI, true);
+
+
+        // The network request might be handled in a different thread so make sure Espresso knows
+        // that the app is busy until the response is handled.
+        // App is busy until further notice
+        EspressoIdlingResource.increment();
+
+        mShiftsRepository.startShift(shiftRequestData, new ShiftsDataSource.ShiftStartStopCallback() {
+            @Override
+            public void onSuccess(String message) {
+
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement(); // Set app as idle.
+                }
+
+                if (ifViewNotActive()) {
+                    return;
+                }
+
+                showLoadingUI(showLoadingUI, false);
+
+
+                if (mShiftsView != null) {
+                    mShiftsView.showServerMessage(message);
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+                if (ifViewNotActive()) {
+                    return;
+                }
+
+                showLoadingUI(showLoadingUI, false);
+
+                if (mShiftsView != null) {
+                    mShiftsView.showServerMessage(errorMessage);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void endShift(final ShiftRequestData shiftRequestData, final boolean showLoadingUI) {
+
+        showLoadingUI(showLoadingUI, true);
+
+        // The network request might be handled in a different thread so make sure Espresso knows
+        // that the app is busy until the response is handled.
+        // App is busy until further notice
+        EspressoIdlingResource.increment();
+
+        mShiftsRepository.endShift(shiftRequestData, new ShiftsDataSource.ShiftStartStopCallback() {
+            @Override
+            public void onSuccess(final String message) {
+
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                    EspressoIdlingResource.decrement(); // Set app as idle.
+                }
+
+                if (ifViewNotActive()) {
+                    return;
+                }
+
+                showLoadingUI(showLoadingUI, false);
+
+
+                if (mShiftsView != null) {
+                    mShiftsView.showServerMessage(message);
+                    mShiftsView.reloadShifts();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(final String errorMessage) {
+
+                if (ifViewNotActive()) {
+                    return;
+                }
+
+                showLoadingUI(showLoadingUI, false);
+
+                if (mShiftsView != null) {
+                    mShiftsView.showServerMessage(errorMessage);
+                }
+            }
+        });
+    }
+
+    private void showLoadingUI(final boolean showLoadingUI, final boolean setLoadingIndicator) {
+        if (showLoadingUI) {
+            if (mShiftsView != null) {
+                mShiftsView.setLoadingIndicator(setLoadingIndicator);
+            }
+        }
+    }
+
+    private boolean ifViewNotActive() {
+        return mShiftsView == null || !mShiftsView.isActive();
+    }
+
     /**
      * @param forceUpdate   Pass in true to refresh the data in the {@link ShiftsDataSource}
      * @param showLoadingUI Pass in true to display a loading icon in the UI
      */
     private void loadBusinessInfo(final boolean forceUpdate, final boolean showLoadingUI) {
-        if (showLoadingUI) {
-            if (mShiftsView != null) {
-                mShiftsView.setLoadingIndicator(true);
-            }
-        }
+
+        showLoadingUI(showLoadingUI, true);
+
         if (forceUpdate) {
             mShiftsRepository.refreshBusinessInfo();
         }
@@ -86,13 +192,11 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
                     EspressoIdlingResource.decrement(); // Set app as idle.
                 }
 
-                if (mShiftsView == null || !mShiftsView.isActive()) {
+                if (ifViewNotActive()) {
                     return;
                 }
 
-                if (showLoadingUI) {
-                    mShiftsView.setLoadingIndicator(false);
-                }
+                showLoadingUI(showLoadingUI, false);
 
                 businessToShow.addAll(businessInfo);
 
@@ -112,11 +216,7 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
      */
     private void loadShifts(final boolean forceUpdate, final boolean showLoadingUI) {
 
-        if (showLoadingUI) {
-            if (mShiftsView != null) {
-                mShiftsView.setLoadingIndicator(true);
-            }
-        }
+        showLoadingUI(showLoadingUI, true);
 
         if (forceUpdate) {
             mShiftsRepository.refreshShifts();
@@ -139,33 +239,31 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
                     EspressoIdlingResource.decrement(); // Set app as idle.
                 }
 
-                if (mShiftsView == null || !mShiftsView.isActive()) {
+                if (ifViewNotActive()) {
                     return;
                 }
 
-                if (showLoadingUI) {
-                    mShiftsView.setLoadingIndicator(false);
-                }
+                showLoadingUI(showLoadingUI, false);
 
                 shiftsToShow.addAll(shifts);
+
                 processShiftInfo(shiftsToShow);
             }
 
             @Override
             public void onDataNotAvailable(final String errorMessage) {
                 // The view may not be able to handle UI updates anymore
-                if (!mShiftsView.isActive()) {
+                if (ifViewNotActive()) {
                     return;
                 }
 
-                if (showLoadingUI) {
-                    mShiftsView.setLoadingIndicator(false);
-                }
+                showLoadingUI(showLoadingUI, false);
 
-                mShiftsView.showLoadingShiftsError(errorMessage);
+                if (mShiftsView != null) {
+                    mShiftsView.showServerMessage(errorMessage);
+                }
             }
         });
-
 
 
     }
@@ -197,8 +295,6 @@ final class ShiftsPresenter implements ShiftsContract.Presenter {
             }
         }
     }
-
-
 
 
     @Override

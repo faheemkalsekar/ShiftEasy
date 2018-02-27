@@ -14,7 +14,7 @@ import com.gadgetmedia.shifteasy.mvp.data.Shift;
 import com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailActivity;
 import com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailFragment;
 import com.gadgetmedia.shifteasy.mvp.util.ActivityUtils;
-import com.gadgetmedia.shifteasy.mvp.util.ISO8601;
+import com.gadgetmedia.shifteasy.mvp.util.DateTimeUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -88,18 +88,18 @@ public class ShiftRecyclerViewAdapter extends RecyclerView.Adapter<ShiftRecycler
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(String.format("Shift %s", String.valueOf(holder.mItem.getId())));
 
-        final String startDate = ISO8601.convertISOToDate(holder.mItem.getStartTime());
-        final String endDate = ISO8601.convertISOToDate(holder.mItem.getStartTime());
+
         String sb = "Shift Started at:" +
                 '\n' +
-                startDate +
+                DateTimeUtil.parseDate(holder.mItem.getStartTime()) +
                 '\n' +
                 '\n' +
                 "Shift Ended at:" +
                 '\n' +
-                endDate;
+                DateTimeUtil.parseDate(holder.mItem.getEndTime());
 
         holder.mDescView.setText(sb);
+
 
         // Resize to the width specified maintaining aspect ratio
         mPicasso.load(holder.mItem.getImage())
