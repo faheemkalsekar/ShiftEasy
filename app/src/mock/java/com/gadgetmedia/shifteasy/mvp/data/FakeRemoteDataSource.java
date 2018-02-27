@@ -60,14 +60,14 @@ public class FakeRemoteDataSource implements ShiftsDataSource {
     }
 
     @VisibleForTesting
-    public void addShifts(Shift... shifts) {
+    public void addShifts(final Shift... shifts) {
         for (Shift shift : shifts) {
             SHIFTS_SERVICE_DATA.put(shift.getId(), shift);
         }
     }
 
     @VisibleForTesting
-    public void addBusiness(Business... businesses) {
+    public void addBusiness(final Business... businesses) {
         for (Business business : businesses) {
             BUSINESS_DATA.put(business.getId(), business);
         }

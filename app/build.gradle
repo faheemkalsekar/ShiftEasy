@@ -21,6 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
             buildConfigField "String", "BASE_URL", '\"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/dmc/\"'
+            buildConfigField "String", "sha1", "\"Deputy 495c6b80688fb7f08f15ed357d270cab276849b4  -\""
         }
 
         release {
@@ -29,6 +30,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
             buildConfigField "String", "BASE_URL", '\"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/dmc/\"'
+            buildConfigField "String", "sha1", "\"Deputy 495c6b80688fb7f08f15ed357d270cab276849b4  -\""
         }
     }
 

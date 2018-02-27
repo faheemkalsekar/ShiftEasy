@@ -1,5 +1,7 @@
 package com.gadgetmedia.shifteasy.mvp.api;
 
+import com.gadgetmedia.shifteasy.mvp.BuildConfig;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -12,7 +14,7 @@ public class AddHeaderInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         Request.Builder builder = chain.request().newBuilder();
-        builder.addHeader("Authorization", "Deputy 495c6b80688fb7f08f15ed357d270cab276849b4  -");
+        builder.addHeader("Authorization", BuildConfig.sha1);
 
         return chain.proceed(builder.build());
     }
