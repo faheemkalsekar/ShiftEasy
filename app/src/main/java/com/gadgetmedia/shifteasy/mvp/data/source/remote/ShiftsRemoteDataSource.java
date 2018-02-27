@@ -47,14 +47,14 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
                                    @NonNull final Response<BusinessResponse> response) {
 
                 final BusinessResponse body = response.body();
+                final List<Business> businessList = new ArrayList<>();
 
                 if (body != null) {
-                    final List<Business> businessList = new ArrayList<>();
-
                     final Business business = new Business(body.getLogo(), body.getName());
                     businessList.add(business);
-                    callback.onBusinessInfoLoaded(businessList);
                 }
+
+                callback.onBusinessInfoLoaded(businessList);
             }
 
             @Override
@@ -74,9 +74,10 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
             public void onResponse(@NonNull Call<ShiftResponse[]> call, @NonNull Response<ShiftResponse[]> response) {
 
                 final ShiftResponse[] shiftResponse = response.body();
+                final List<Shift> shiftList = new ArrayList<>();
 
                 if (shiftResponse != null) {
-                    final List<Shift> shiftList = new ArrayList<>();
+
                     for (ShiftResponse shiftRes : shiftResponse) {
                         Log.d("onResponse", shiftRes.toString());
                         final Shift shift = new Shift(shiftRes.getId(), shiftRes.getStart(), shiftRes.getEnd(),
@@ -85,8 +86,9 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
                         shiftList.add(shift);
                     }
 
-                    callback.onShiftsLoaded(shiftList);
+
                 }
+                callback.onShiftsLoaded(shiftList);
             }
 
             @Override
