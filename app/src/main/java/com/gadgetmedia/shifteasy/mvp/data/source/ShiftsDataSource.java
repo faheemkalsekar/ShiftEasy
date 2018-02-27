@@ -28,6 +28,7 @@ public interface ShiftsDataSource {
 
     void refreshBusinessInfo();
 
+    void deleteAllShifts();
 
     interface LoadBusinessInfoCallback {
         void onBusinessInfoLoaded(final List<Business> businessInfo);

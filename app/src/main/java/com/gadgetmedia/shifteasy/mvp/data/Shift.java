@@ -23,15 +23,14 @@ public class Shift {
 */
 
     @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "id")
     private final int mId;
 
-    @Nullable
+    @NonNull
     @ColumnInfo(name = "start")
     private final String mStartTime;
 
-    @Nullable
+    @NonNull
     @ColumnInfo(name = "end")
     private final String mEndTime;
 
@@ -56,9 +55,9 @@ public class Shift {
     private final String mImage;
 
 
-    public Shift(@NonNull final int mId, @NonNull final String mStartTime, @NonNull final String mEndTime,
-                 @NonNull final String mStartLatitude, @NonNull final String mStartLongitude, @NonNull final String mEndLatitude,
-                 @NonNull final String mEndLongitude, @NonNull final String mImage) {
+    public Shift(final int mId, @NonNull final String mStartTime, @NonNull final String mEndTime,
+                 @Nullable final String mStartLatitude, @Nullable final String mStartLongitude, @Nullable final String mEndLatitude,
+                 @Nullable final String mEndLongitude, @Nullable final String mImage) {
 
         this.mId = mId;
         this.mStartTime = mStartTime;
@@ -70,42 +69,41 @@ public class Shift {
         this.mImage = mImage;
     }
 
-    @NonNull
     public int getId() {
         return mId;
     }
 
-    @NonNull
+    @Nullable
     public String getStartTime() {
         return mStartTime;
     }
 
-    @NonNull
+    @Nullable
     public String getEndTime() {
         return mEndTime;
     }
 
-    @NonNull
+    @Nullable
     public String getStartLatitude() {
         return mStartLatitude;
     }
 
-    @NonNull
+    @Nullable
     public String getStartLongitude() {
         return mStartLongitude;
     }
 
-    @NonNull
+    @Nullable
     public String getEndLatitude() {
         return mEndLatitude;
     }
 
-    @NonNull
+    @Nullable
     public String getEndLongitude() {
         return mEndLongitude;
     }
 
-    @NonNull
+    @Nullable
     public String getImage() {
         return mImage;
     }

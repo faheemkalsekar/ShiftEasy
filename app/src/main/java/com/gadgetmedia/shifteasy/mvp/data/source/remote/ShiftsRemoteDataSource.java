@@ -72,12 +72,13 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
         mShiftsService.getShiftsList().enqueue(new Callback<ShiftResponse[]>() {
             @Override
             public void onResponse(@NonNull Call<ShiftResponse[]> call, @NonNull Response<ShiftResponse[]> response) {
-                Log.d("onResponse", "onResponse");
+
                 final ShiftResponse[] shiftResponse = response.body();
 
                 if (shiftResponse != null) {
                     final List<Shift> shiftList = new ArrayList<>();
                     for (ShiftResponse shiftRes : shiftResponse) {
+                        Log.d("onResponse", shiftRes.toString());
                         final Shift shift = new Shift(shiftRes.getId(), shiftRes.getStart(), shiftRes.getEnd(),
                                 shiftRes.getStartLatitude(), shiftRes.getStartLongitude(), shiftRes.getEndLatitude(),
                                 shiftRes.getEndLongitude(), shiftRes.getImage());
@@ -136,6 +137,11 @@ public class ShiftsRemoteDataSource implements ShiftsDataSource {
 
     @Override
     public void refreshBusinessInfo() {
+
+    }
+
+    @Override
+    public void deleteAllShifts() {
 
     }
 

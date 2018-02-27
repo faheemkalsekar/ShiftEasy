@@ -70,14 +70,24 @@ public class ShiftDetailFragment extends DaggerFragment {
         if (mShift != null) {
             try {
 
-                String sb = "Shift Started at:" +
+                String sb = "Shift Started at: " +
                         '\n' +
                         DateTimeUtil.parseDate(mShift.getStartTime()) +
                         '\n' +
                         '\n' +
-                        "Shift Ended at:" +
+                        "Shift Ended at: " +
                         '\n' +
-                        DateTimeUtil.parseDate(mShift.getEndTime());
+                        DateTimeUtil.parseDate(mShift.getEndTime()) +
+                        '\n' +
+                        '\n' +
+                        "Start Location: " +
+                        '\n' +
+                        "Lat: " + mShift.getStartLatitude() + " Lon: " + mShift.getStartLongitude() +
+                        '\n' +
+                        '\n' +
+                        "End Location: " +
+                        '\n' +
+                        "Lat: " + mShift.getEndLatitude() + " Lon: " + mShift.getEndLongitude();
 
                 ((TextView) rootView.findViewById(R.id.item_detail)).setText(sb);
             } catch (Exception e) {

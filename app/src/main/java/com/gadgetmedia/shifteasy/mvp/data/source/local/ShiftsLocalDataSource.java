@@ -117,6 +117,18 @@ public class ShiftsLocalDataSource implements ShiftsDataSource {
         mAppExecutors.diskIO().execute(saveRunnable);
     }
 
+    @Override
+    public void deleteAllShifts() {
+        Runnable deleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mShiftsDao.deleteShifts();
+            }
+        };
+
+        mAppExecutors.diskIO().execute(deleteRunnable);
+    }
+
     public void saveShiftsList(final List<Shift> shiftList) {
         checkNotNull(shiftList);
         Runnable saveRunnable = new Runnable() {

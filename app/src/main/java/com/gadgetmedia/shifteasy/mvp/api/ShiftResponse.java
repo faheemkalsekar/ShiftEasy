@@ -1,8 +1,6 @@
 package com.gadgetmedia.shifteasy.mvp.api;
 
-import com.gadgetmedia.shifteasy.mvp.data.Shift;
-
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * POJO to hold News responses.
@@ -10,76 +8,80 @@ import java.util.List;
 public class ShiftResponse {
 
     private int id;
-    private String endLatitude;
-    private String startLongitude;
-    private String startLatitude;
     private String start;
-    private String image;
-    private String endLongitude;
     private String end;
+    @SerializedName("startLatitude")
+    private String startLatitude;
+    @SerializedName("startLongitude")
+    private String startLongitude;
+    @SerializedName("endLatitude")
+    private String endLatitude;
+    @SerializedName("endLongitude")
+    private String endLongitude;
+    private String image;
 
     public int getId() {
         return id;
     }
 
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEndLatitude() {
-        return endLatitude;
-    }
-
-    public void setEndLatitude(final String endLatitude) {
-        this.endLatitude = endLatitude;
-    }
-
-    public String getStartLongitude() {
-        return startLongitude;
-    }
-
-    public void setStartLongitude(final String startLongitude) {
-        this.startLongitude = startLongitude;
-    }
-
-    public String getStartLatitude() {
-        return startLatitude;
-    }
-
-    public void setStartLatitude(final String startLatitude) {
-        this.startLatitude = startLatitude;
     }
 
     public String getStart() {
         return start;
     }
 
-    public void setStart(final String start) {
+    public void setStart(String start) {
         this.start = start;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(final String image) {
-        this.image = image;
-    }
-
-    public String getEndLongitude() {
-        return endLongitude;
-    }
-
-    public void setEndLongitude(final String endLongitude) {
-        this.endLongitude = endLongitude;
     }
 
     public String getEnd() {
         return end;
     }
 
-    public void setEnd(final String end) {
+    public void setEnd(String end) {
         this.end = end;
+    }
+
+    public String getStartLatitude() {
+        return startLatitude;
+    }
+
+    public void setStartLatitude(String startLatitude) {
+        this.startLatitude = startLatitude;
+    }
+
+    public String getStartLongitude() {
+        return startLongitude;
+    }
+
+    public void setStartLongitude(String startLongitude) {
+        this.startLongitude = startLongitude;
+    }
+
+    public String getEndLatitude() {
+        return endLatitude;
+    }
+
+    public void setEndLatitude(String endLatitude) {
+        this.endLatitude = endLatitude;
+    }
+
+    public String getEndLongitude() {
+        return endLongitude;
+    }
+
+    public void setEndLongitude(String endLongitude) {
+        this.endLongitude = endLongitude;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

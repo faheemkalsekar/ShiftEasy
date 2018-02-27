@@ -86,7 +86,7 @@ public class ShiftsListActivity extends DaggerAppCompatActivity
             mPresenter = mPresenterProvider.get();
         }
         setContentView(R.layout.activity_shifts_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.listtoolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

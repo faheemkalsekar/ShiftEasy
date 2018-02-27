@@ -246,8 +246,6 @@ public class ShiftsRepository implements ShiftsDataSource {
     @Override
     public void refreshShifts() {
         mShiftsCacheIsDirty = true;
-
-
     }
 
 
@@ -256,5 +254,15 @@ public class ShiftsRepository implements ShiftsDataSource {
         mBusinessCacheIsDirty = true;
     }
 
+    @Override
+    public void deleteAllShifts() {
+        mRemoteShiftsDataSource.deleteAllShifts();
+        mLocalShiftsDataSource.deleteAllShifts();
+
+        if (mCachedShift == null) {
+            mCachedShift = new LinkedHashMap<>();
+        }
+        mCachedShift.clear();
+    }
 
 }
