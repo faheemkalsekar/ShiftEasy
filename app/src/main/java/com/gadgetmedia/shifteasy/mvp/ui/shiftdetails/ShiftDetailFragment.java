@@ -1,6 +1,7 @@
 package com.gadgetmedia.shifteasy.mvp.ui.shiftdetails;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.gadgetmedia.shifteasy.mvp.R;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
+import com.gadgetmedia.shifteasy.mvp.ui.maps.MapsActivity;
 import com.gadgetmedia.shifteasy.mvp.util.DateTimeUtil;
 import com.google.gson.Gson;
 
@@ -96,6 +98,29 @@ public class ShiftDetailFragment extends DaggerFragment {
 
 
         }
+
+        rootView.findViewById(R.id.start_shift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                final Intent mapsIntent = new Intent(getActivity(), MapsActivity.class);
+                mapsIntent.putExtra("LATITUDE_ID", mShift.getStartLatitude());
+                mapsIntent.putExtra("LONGITUDE_ID", mShift.getStartLongitude());
+                mapsIntent.putExtra("TITLE", "Shift " + mShift.getId());
+                startActivity(mapsIntent);
+
+            }
+        });
+
+        rootView.findViewById(R.id.end_shift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                final Intent mapsIntent = new Intent(getActivity(), MapsActivity.class);
+                mapsIntent.putExtra("LATITUDE_ID", mShift.getEndLatitude());
+                mapsIntent.putExtra("LONGITUDE_ID", mShift.getEndLongitude());
+                mapsIntent.putExtra("TITLE", "Shift " + mShift.getId());
+                startActivity(mapsIntent);
+            }
+        });
 
         return rootView;
     }

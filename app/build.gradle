@@ -21,7 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
             buildConfigField "String", "BASE_URL", '\"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/dmc/\"'
-            buildConfigField "String", "sha1", "\"Deputy 495c6b80688fb7f08f15ed357d270cab276849b4  -\""
+            buildConfigField "String", "sha1", "\"Deputy 885c14c8838990420dee31863f52968cbcdd0996  -\""
         }
 
         release {
@@ -30,7 +30,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
             buildConfigField "String", "BASE_URL", '\"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/dmc/\"'
-            buildConfigField "String", "sha1", "\"Deputy 495c6b80688fb7f08f15ed357d270cab276849b4  -\""
+            buildConfigField "String", "sha1", "\"Deputy 885c14c8838990420dee31863f52968cbcdd0996  -\""
         }
     }
 
@@ -65,9 +65,8 @@ android {
 
 dependencies {
     // App's dependencies, including test
-    implementation 'com.android.support:design:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:support-vector-drawable:27.0.2'
+    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
@@ -76,8 +75,10 @@ dependencies {
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
     implementation "com.google.guava:guava:$rootProject.guavaVersion"
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
-    implementation 'com.android.support:support-v4:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
     // Dagger dependencies

@@ -1,9 +1,33 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_detail"
-    style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context="com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailFragment" />
+    android:orientation="vertical">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/item_detail"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/app_name"
+        android:textIsSelectable="true"
+        tools:context="com.gadgetmedia.shifteasy.mvp.ui.shiftdetails.ShiftDetailFragment" />
+
+    <Button
+        android:id="@+id/start_shift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_location" />
+
+    <Button
+        android:id="@+id/end_shift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/end_location" />
+
+</LinearLayout>
+
+
