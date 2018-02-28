@@ -1,7 +1,5 @@
 package com.gadgetmedia.shifteasy.mvp.data.source;
 
-import android.support.annotation.NonNull;
-
 import com.gadgetmedia.shifteasy.mvp.api.ShiftRequestData;
 import com.gadgetmedia.shifteasy.mvp.data.Business;
 import com.gadgetmedia.shifteasy.mvp.data.Shift;
@@ -44,15 +42,15 @@ public class ShiftsRepository implements ShiftsDataSource {
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    Map<Integer, Business> mCachedBusiness;
-    Map<Integer, Shift> mCachedShift;
+    private Map<Integer, Business> mCachedBusiness;
+    private Map<Integer, Shift> mCachedShift;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
      * has package local visibility so it can be accessed from tests.
      */
-    boolean mBusinessCacheIsDirty = false;
-    boolean mShiftsCacheIsDirty = false;
+    private boolean mBusinessCacheIsDirty = false;
+    private boolean mShiftsCacheIsDirty = false;
 
     /**
      * By marking the constructor with {@code @Inject}, Dagger will try to inject the dependencies
@@ -83,7 +81,7 @@ public class ShiftsRepository implements ShiftsDataSource {
      * get the data.
      */
     @Override
-    public void getBusinessInfo(@NonNull final LoadBusinessInfoCallback callback) {
+    public void getBusinessInfo(final LoadBusinessInfoCallback callback) {
         checkNotNull(callback);
 
         // Respond immediately with cache if available and not dirty
@@ -91,10 +89,7 @@ public class ShiftsRepository implements ShiftsDataSource {
             callback.onBusinessInfoLoaded(new ArrayList<>(mCachedBusiness.values()));
         }
 
-        if (mBusinessCacheIsDirty) {
-            // If the cache is dirty we need to fetch new data from the network.
-            getBizInfoFromRemoteDataSource(callback);
-        } else {
+//        else {
             // Query the local storage if available. If not, query the network.
             mLocalShiftsDataSource.getBusinessInfo(new LoadBusinessInfoCallback() {
                 @Override
@@ -105,25 +100,30 @@ public class ShiftsRepository implements ShiftsDataSource {
 
                 @Override
                 public void onDataNotAvailable(String message) {
-                    getBizInfoFromRemoteDataSource(callback);
+//                    getBizInfoFromRemoteDataSource(callback);
                 }
             });
+//        }
+
+        if (mBusinessCacheIsDirty) {
+            // If the cache is dirty we need to fetch new data from the network.
+            getBizInfoFromRemoteDataSource(callback);
         }
 
     }
 
     @Override
-    public void getShifts(@NonNull final LoadShiftsCallback callback) {
+    public void getShifts(final LoadShiftsCallback callback) {
         checkNotNull(callback);
 
         // Respond immediately with cache if available and not dirty
         if (mCachedShift != null && !mShiftsCacheIsDirty) {
             callback.onShiftsLoaded(new ArrayList<>(mCachedShift.values()));
         }
-        if (mShiftsCacheIsDirty) {
-            // If the cache is dirty we need to fetch new data from the network.
-            getShiftFromServer(callback);
-        } else {
+//        if (mShiftsCacheIsDirty) {
+//            // If the cache is dirty we need to fetch new data from the network.
+//            getShiftFromServer(callback);
+//        } else {
             // Query the local storage if available. If not, query the network.
             mLocalShiftsDataSource.getShifts(new LoadShiftsCallback() {
                 @Override
@@ -134,11 +134,14 @@ public class ShiftsRepository implements ShiftsDataSource {
 
                 @Override
                 public void onDataNotAvailable(final String errorMessage) {
-                    getShiftFromServer(callback);
+//                    getShiftFromServer(callback);
                 }
             });
+//        }
+        if (mShiftsCacheIsDirty) {
+            // If the cache is dirty we need to fetch new data from the network.
+            getShiftFromServer(callback);
         }
-
 
     }
 
@@ -212,7 +215,7 @@ public class ShiftsRepository implements ShiftsDataSource {
 
 
     @Override
-    public void startShift(@NonNull final ShiftRequestData shift, @NonNull final ShiftStartStopCallback callback) {
+    public void startShift(final ShiftRequestData shift, final ShiftStartStopCallback callback) {
 
         mRemoteShiftsDataSource.startShift(shift, new ShiftStartStopCallback() {
             @Override
@@ -228,7 +231,7 @@ public class ShiftsRepository implements ShiftsDataSource {
     }
 
     @Override
-    public void endShift(@NonNull ShiftRequestData shift, @NonNull final ShiftStartStopCallback callback) {
+    public void endShift(ShiftRequestData shift, final ShiftStartStopCallback callback) {
         mRemoteShiftsDataSource.endShift(shift, new ShiftStartStopCallback() {
             @Override
             public void onSuccess(final String message) {
