@@ -1,5 +1,5 @@
 # ShiftEasy
-Use the app to find work (we call them Shifts) at nearby stores and shops. Opportunities to earn are everywhere!. This is a sample app that uses MVP Architecture with Dagger 2. It uses Location services to start and stop a shift.
+Use the app to find work (we call them Shifts) at nearby stores and shops. Opportunities to earn are everywhere!. This is a sample app that uses MVP Architecture with Dagger 2. It uses Location services to start and stop a shift. The app caches Shifts Data and Busines Info data. So, this is availabe even in offline mode.
 
 ## Introduction
 ### Functionality
@@ -11,11 +11,13 @@ The app is composed of 3 main screen.
 3. Start a shift.
 4. Stop a shift.
 
+In offline mode, this Activity will display Shifts List and Business Info. Before starting or stopping a shift, the app checks for location information.
+
 #### ShiftDetailActivity
-Displays all information regarding a shift.
+Displays all information regarding a shift. Also works in offline mode.
 
 #### MapsActivity
-Displays Map.
+Displays Map. Works in offline mode.
 
 ## Build Variants
 There are 3 build variants.
