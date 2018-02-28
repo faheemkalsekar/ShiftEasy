@@ -3,7 +3,7 @@ Use the app to find work (we call them Shifts) at nearby stores and shops. Oppor
 
 ## Introduction
 ### Functionality
-The app is composed of 2 main screen.
+The app is composed of 3 main screen.
 
 #### ShiftsListActivity
 1. Allows you to fetch your list of shifts from a URL. Each Shift Item fecthed is kept in the database in Shifts table.
@@ -13,6 +13,9 @@ The app is composed of 2 main screen.
 
 #### ShiftDetailActivity
 Displays all information regarding a shift.
+
+#### MapsActivity
+Displays Map.
 
 ## Build Variants
 There are 3 build variants.
